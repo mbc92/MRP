@@ -1,0 +1,34 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "CMake: Build Jetson Nano",
+      "type": "shell",
+      "command": "cmake",
+      "args": [
+        "-B", "build",
+        "-DCMAKE_TOOLCHAIN_FILE=cmake/toolchains/jetson-nano.cmake",
+        "-DCMAKE_BUILD_TYPE=Release"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": ["$gcc"],
+      "detail": "Generates build system for Jetson Nano cross-compilation"
+    },
+    {
+      "label": "CMake: Compile",
+      "type": "shell",
+      "command": "cmake",
+      "args": [
+        "--build", "build",
+        "--parallel", "${env:NUMBER_OF_PROCESSORS}"
+      ],
+      "dependsOn": "CMake: Build Jetson Nano",
+      "group": "build",
+      "problemMatcher": ["$gcc"],
+      "detail": "Compiles the project using the Jetson Nano cross-toolchain"
+    }
+  ]
+}

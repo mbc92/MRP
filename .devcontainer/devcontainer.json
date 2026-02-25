@@ -1,0 +1,14 @@
+{
+  "name": "Jetson Nano",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "remoteUser": "dev",
+  "mounts": [
+    "source=${localWorkspaceFolder},target=/workspace,type=bind",
+     "source=/home/chris/projects/jetson-sysroot,target=/opt/jetson-sysroot,type=bind"
+  ],
+  "settings": {
+    "terminal.integrated.shell.linux": "/bin/bash"
+  }
+}
