@@ -7,7 +7,7 @@
       "command": "cmake",
       "args": [
         "-B", "build",
-        "-DCMAKE_TOOLCHAIN_FILE=cmake/toolchains/jetson-nano.cmake",
+        "-DCMAKE_TOOLCHAIN_FILE=toolchains/jetson-nano.cmake",
         "-DCMAKE_BUILD_TYPE=Release"
       ],
       "group": {
@@ -29,6 +29,18 @@
       "group": "build",
       "problemMatcher": ["$gcc"],
       "detail": "Compiles the project using the Jetson Nano cross-toolchain"
+    },
+    {
+      "label": "Deploy to Jetson Nano",
+      "type": "shell",
+      "command": "scp",
+      "args": [
+        "build/bin/main",
+        "root@192.168.178.66:/home/root/app"
+      ],
+      "dependsOn": "CMake: Compile",
+      "problemMatcher": [],
+      "detail": "Copies compiled binary to Jetson Nano"
     }
   ]
 }

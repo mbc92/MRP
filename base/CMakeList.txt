@@ -1,7 +1,0 @@
-cmake_minimum_required(VERSION 3.10)
-project(jetson_hello LANGUAGES CXX)
-
-# CUDA is optional, you can add it later
-# find_package(CUDA)
-
-add_executable(base main.cpp)
