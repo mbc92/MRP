@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(jetson_hello LANGUAGES CXX)
+project(jetson_hello LANGUAGES CXX CUDA)
 
 # Set C++ standard
 set(CMAKE_CXX_STANDARD 17)
@@ -9,8 +9,8 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 # Put binaries in bin folder
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-# Include headers
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/datasource)
+# Add cudafunctions subproject
+add_subdirectory(cudafunctions)
 
 # Source files
 set(SOURCES
@@ -19,6 +19,14 @@ set(SOURCES
 
 # Create executable
 add_executable(main ${SOURCES})
+
+# Link your CUDA library
+target_link_libraries(main PRIVATE cudafunctions)
+
+# Modern include
+target_include_directories(main PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/datasource
+)
 
 # Optional compiler flags
 # target_compile_options(main PRIVATE -Wall -Wextra -O3)

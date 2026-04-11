@@ -1,18 +1,20 @@
-FROM ubuntu:20.04
-ENV DEBIAN_FRONTEND=noninteractive
-
-ENV DEBIAN_FRONTEND=noninteractive
-WORKDIR /workspace
-
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    cmake \
-    git \
-    gcc-aarch64-linux-gnu \
-    g++-aarch64-linux-gnu \
-    pkg-config \
-    sudo \
-    && rm -rf /var/lib/apt/lists/*
-
-RUN useradd -ms /bin/bash dev && echo "dev ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
-USER dev
+FROM soramaregistry.azurecr.io/jetson-nano-xilinx-sdk:latest AS listener-nano-sdk
+FROM soramaregistry.azurecr.io/jetson-xavier-nx-xilinx-sdk:latest AS listener-xavier-sdk
+ 
+FROM soramaregistry.azurecr.io/qtdevcontainerbaseimage:latest
+ 
+# Cross compile toolchain for Listener nano
+COPY --from=listener-nano-sdk /opt/sdk-jetson-nano-xilinx /opt/sdk-jetson-nano-xilinx
+# Cross compile toolchain for Listener xavier
+COPY --from=listener-xavier-sdk /opt/sdk-jetson-xavier-nx-xilinx /opt/sdk-jetson-xavier-nx-xilinx
+ 
+RUN export DEBIAN_FRONTEND=noninteractive \
+    && apt-get update \
+    && apt-get -y install --no-install-recommends \
+        libprotobuf-dev \
+        protobuf-compiler \
+        libcairo2-dev \
+        libjson-glib-dev \
+        libsoup2.4-dev \
+        sshpass \
+        libxkbfile1

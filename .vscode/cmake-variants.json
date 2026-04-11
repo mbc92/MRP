@@ -1,0 +1,38 @@
+{
+  "buildType": {
+    "default": "Debug Linux",
+    "choices": {
+      "debug-linux": {
+        "short": "Debug Linux",
+        "long": "Emit debug information without performing optimizations",
+        "buildType": "Debug",
+        "settings": {
+          "CUDA_TOOLKIT_ROOT": "/usr/local/cuda-10.2",
+          "SORAMA_BOOST_LINKAGE": "shared",
+          "CMAKE_INSTALL_LIBDIR": "lib",
+          "CMAKE_CUDA_COMPILER": "/usr/local/cuda-10.2/bin/nvcc",
+          "FETCHCONTENT_BASE_DIR": "${workspaceFolder}/.3rdparty/x86_64",
+          "CMAKE_TOOLCHAIN_FILE": "${workspaceFolder}/toolchains/linux-x64-debug.toolchain.cmake"
+        }
+      },
+      "debug-target": {
+        "short": "Debug Target",
+        "long": "Emit debug information without performing optimizations for the target device platform",
+        "buildType": "Debug",
+        "settings": {
+          "CUDA_TOOLKIT_ROOT": "/usr/local/cuda-10.2",
+          "SORAMA_BOOST_LINKAGE": "shared"
+        }
+      },
+      "release-target": {
+        "short": "Release Target",
+        "long": "No debug information while performing optimizations for the target device platform",
+        "buildType": "Release",
+        "settings": {
+          "CUDA_TOOLKIT_ROOT": "/usr/local/cuda-10.2",
+          "SORAMA_BOOST_LINKAGE": "shared"
+        }
+      }
+    }
+  }
+}

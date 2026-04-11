@@ -61,11 +61,6 @@ explicit V4LSource(
         ioctl(fd, VIDIOC_QBUF, &buf);
     }
 
-    void closeImpl()
-    {
-        std::cout << "Closing USB camera\n";
-    }
-
 private:
     int fd{-1};
     std::unique_ptr<uint8_t, std::function<void(uint8_t*)>> mappedBuffer;

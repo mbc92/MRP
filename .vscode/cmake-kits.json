@@ -1,0 +1,7 @@
+[
+    {
+        "name": "Nano SDK",
+        "triple": "arm-linux-listener-nano",
+        "environmentSetupScript": "/opt/sdk-jetson-nano-xilinx/environment-setup-armv8a-sorama-linux",
+    }
+]

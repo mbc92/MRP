@@ -3,12 +3,19 @@
   "build": {
     "dockerfile": "Dockerfile"
   },
-  "remoteUser": "dev",
+  "remoteUser": "root",
   "mounts": [
     "source=${localWorkspaceFolder},target=/workspace,type=bind",
      "source=/home/chris/projects/jetson-sysroot,target=/opt/jetson-sysroot,type=bind"
   ],
   "settings": {
     "terminal.integrated.shell.linux": "/bin/bash"
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-vscode.cmake-tools"
+      ]
+    }
   }
 }
