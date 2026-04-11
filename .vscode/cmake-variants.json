@@ -10,9 +10,7 @@
           "CUDA_TOOLKIT_ROOT": "/usr/local/cuda-10.2",
           "SORAMA_BOOST_LINKAGE": "shared",
           "CMAKE_INSTALL_LIBDIR": "lib",
-          "CMAKE_CUDA_COMPILER": "/usr/local/cuda-10.2/bin/nvcc",
-          "FETCHCONTENT_BASE_DIR": "${workspaceFolder}/.3rdparty/x86_64",
-          "CMAKE_TOOLCHAIN_FILE": "${workspaceFolder}/toolchains/linux-x64-debug.toolchain.cmake"
+          "CMAKE_CUDA_COMPILER": "/usr/local/cuda-10.2/bin/nvcc"
         }
       },
       "debug-target": {

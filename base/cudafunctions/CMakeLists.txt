@@ -1,35 +1,45 @@
 cmake_minimum_required(VERSION 3.10)
-set(CMAKE_C_COMPILER /usr/bin/gcc-8)
-set(CMAKE_CXX_COMPILER /usr/bin/g++-8)
-
-# THIS is the critical line
-set(CMAKE_CUDA_HOST_COMPILER /usr/bin/g++-8)
-
 project(cudafunctions LANGUAGES CXX CUDA)
 
-# Collect sources
+# ----------------------------
+# Sources
+# ----------------------------
 set(CPP_SOURCES
-    benchmarkMemCopy.cpp
+    benchmark.cpp
 )
 
 set(CUDA_SOURCES
-    kernels/benchmarkMemCopy.cu
+    kernels/benchmark.cu
 )
 
-# Create library
 add_library(cudafunctions
     ${CPP_SOURCES}
     ${CUDA_SOURCES}
 )
 
-# Include directories
+# ----------------------------
+# IMPORTANT: CUDA include path (SYSROOT)
+# ----------------------------
+set(JETSON_SYSROOT /opt/sdk-jetson-nano-xilinx/sysroots/armv8a-sorama-linux)
+
 target_include_directories(cudafunctions
     PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}
         ${CMAKE_CURRENT_SOURCE_DIR}/kernels
+        ${JETSON_SYSROOT}/usr/local/cuda-10.2/include
+        ${JETSON_SYSROOT}/usr/local/cuda-10.2/include/cuda
 )
 
-# (Optional) set CUDA standard
+# IMPORTANT: link ONLY device runtime correctly
+target_link_libraries(cudafunctions
+    PRIVATE
+        CUDA::cudart
+)
+
+# ----------------------------
+# CUDA settings
+# ----------------------------
 set_target_properties(cudafunctions PROPERTIES
     CUDA_STANDARD 14
+    CUDA_STANDARD_REQUIRED ON
 )
