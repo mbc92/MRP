@@ -7,7 +7,6 @@
       "command": "cmake",
       "args": [
         "-B", "build",
-        "-DCMAKE_TOOLCHAIN_FILE=toolchains/jetson-nano.cmake",
         "-DCMAKE_BUILD_TYPE=Release"
       ],
       "group": {
@@ -35,7 +34,7 @@
       "type": "shell",
       "command": "scp",
       "args": [
-        "build/bin/main",
+        "build/MRP",
         "root@192.168.178.66:/home/root/app"
       ],
       "dependsOn": "CMake: Compile",

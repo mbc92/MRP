@@ -1,2 +1,7 @@
 [
+    {
+        "name": "Nano SDK",
+        "triple": "arm-linux-nano",
+        "environmentSetupScript": "/opt/yocto-sdk/environment-setup-armv8a-oe-linux"
+    }
 ]

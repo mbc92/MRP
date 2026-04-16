@@ -1,0 +1,31 @@
+{
+  "name": "Jetson Nano Yocto Cross",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+
+  "containerEnv": {
+    "CUDA_TOOLKIT_ROOT": "/opt/yocto-sdk/sysroots/aarch64-linux/usr/local/cuda"
+  },
+
+  "mounts": [
+    "source=${localWorkspaceFolder},target=/workspaces/jetson,type=bind"
+  ],
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-vscode.cpptools",
+        "ms-vscode.cmake-tools",
+        "twxs.cmake"
+      ]
+    }
+  },
+
+  "runArgs": [
+    "--cap-add=SYS_PTRACE",
+    "--security-opt=seccomp:unconfined"
+  ],
+  "postCreateCommand": "bash -c 'source /opt/yocto-sdk/environment-setup-armv8a-oe-linux'"
+}

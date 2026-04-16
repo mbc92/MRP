@@ -1,17 +1,58 @@
-cmake_minimum_required(VERSION 3.10)
-project(MRP LANGUAGES CXX)
+cmake_minimum_required(VERSION 3.18)
 
-# Optional: set C++ standard globally
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_CUDA_FLAGS_INIT
+    "--compiler-options=--sysroot=$ENV{SDKTARGETSYSROOT}"
+)
 
-# Optional: set binary output folder for all subprojects
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_EXE_LINKER_FLAGS_INIT
+    "--sysroot=$ENV{SDKTARGETSYSROOT}"
+)
 
-# Add the base subdirectory (it has its own CMakeLists.txt)
-add_subdirectory(base)
+set(CMAKE_CUDA_HOST_COMPILER $ENV{CXX})
+set(CMAKE_CUDA_COMPILER "/usr/local/cuda-10.2/bin/nvcc")
 
-# You can add other subdirectories here in the future, e.g.,
-# add_subdirectory(toolchains)
-# add_subdirectory(utils)
+project(MRP LANGUAGES CXX CUDA)
+
+# ------------------------------------------------------------------------------
+# Sysroot (must come from toolchain file / environment)
+# ------------------------------------------------------------------------------
+#set(SYSROOT $ENV{SDKTARGETSYSROOT})
+
+# ------------------------------------------------------------------------------
+# Options
+# ------------------------------------------------------------------------------
+option(DBG "Enable debug build" OFF)
+
+set(SM_ARCH 53 CACHE STRING "CUDA SM architecture (Jetson Nano = 53)")
+
+# ------------------------------------------------------------------------------
+# C++ / CUDA standards
+# ------------------------------------------------------------------------------
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CUDA_STANDARD 14)
+
+if(DBG)
+    set(CMAKE_BUILD_TYPE Debug)
+    set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -g -G")
+else()
+    set(CMAKE_BUILD_TYPE Release)
+endif()
+
+# ------------------------------------------------------------------------------
+# CUDA lib
+# ------------------------------------------------------------------------------
+add_executable(MRP
+    main.cu
+)
+
+# ------------------------------------------------------------------------------
+# CUDA architecture
+# ------------------------------------------------------------------------------
+set_target_properties(MRP PROPERTIES
+    CUDA_ARCHITECTURES ${SM_ARCH}
+)
+
+target_link_libraries(MRP PRIVATE
+    cudart
+)
+
