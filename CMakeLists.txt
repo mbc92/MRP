@@ -14,11 +14,6 @@ set(CMAKE_CUDA_COMPILER "/usr/local/cuda-10.2/bin/nvcc")
 project(MRP LANGUAGES CXX CUDA)
 
 # ------------------------------------------------------------------------------
-# Sysroot (must come from toolchain file / environment)
-# ------------------------------------------------------------------------------
-#set(SYSROOT $ENV{SDKTARGETSYSROOT})
-
-# ------------------------------------------------------------------------------
 # Options
 # ------------------------------------------------------------------------------
 option(DBG "Enable debug build" OFF)
@@ -38,9 +33,8 @@ else()
     set(CMAKE_BUILD_TYPE Release)
 endif()
 
-# ------------------------------------------------------------------------------
-# CUDA lib
-# ------------------------------------------------------------------------------
+add_subdirectory(cudafunctions)
+
 add_executable(MRP
     main.cu
 )
@@ -53,6 +47,7 @@ set_target_properties(MRP PROPERTIES
 )
 
 target_link_libraries(MRP PRIVATE
+    cudafunctions
     cudart
 )
 
