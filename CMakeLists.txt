@@ -36,7 +36,7 @@ endif()
 add_subdirectory(cudafunctions)
 
 add_executable(MRP
-    main.cu
+    main.cpp
 )
 
 # ------------------------------------------------------------------------------
@@ -44,6 +44,10 @@ add_executable(MRP
 # ------------------------------------------------------------------------------
 set_target_properties(MRP PROPERTIES
     CUDA_ARCHITECTURES ${SM_ARCH}
+)
+
+target_include_directories(MRP PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/datasource
 )
 
 target_link_libraries(MRP PRIVATE
