@@ -33,8 +33,26 @@ else()
     set(CMAKE_BUILD_TYPE Release)
 endif()
 
+# ------------------------------------------------------------------------------
+# GStreamer
+# ------------------------------------------------------------------------------
+find_package(PkgConfig REQUIRED)
+
+pkg_check_modules(GST REQUIRED
+    gstreamer-1.0
+    gstreamer-app-1.0
+)
+
+pkg_check_modules(RTSP REQUIRED gstreamer-rtsp-server-1.0)
+
+# ------------------------------------------------------------------------------
+# Submodules
+# ------------------------------------------------------------------------------
 add_subdirectory(cudafunctions)
 
+# ------------------------------------------------------------------------------
+# Executable
+# ------------------------------------------------------------------------------
 add_executable(MRP
     main.cpp
 )
@@ -46,12 +64,36 @@ set_target_properties(MRP PROPERTIES
     CUDA_ARCHITECTURES ${SM_ARCH}
 )
 
+# ------------------------------------------------------------------------------
+# Includes
+# ------------------------------------------------------------------------------
 target_include_directories(MRP PUBLIC
+    /usr/include
+    ${RTSP_INCLUDE_DIRS}
     ${CMAKE_CURRENT_SOURCE_DIR}/datasource
+    ${GST_INCLUDE_DIRS}
+)
+
+# ------------------------------------------------------------------------------
+# Libraries
+# ------------------------------------------------------------------------------
+
+target_link_directories(MRP PRIVATE
+    $ENV{SDKTARGETSYSROOT}/usr/lib
 )
 
 target_link_libraries(MRP PRIVATE
     cudafunctions
+    ${GST_LIBRARIES}
+    ${RTSP_LIBRARIES}
+    nvbufsurface
+    nvbuf_utils
     cudart
 )
 
+# ------------------------------------------------------------------------------
+# Compiler flags from pkg-config
+# ------------------------------------------------------------------------------
+target_compile_options(MRP PRIVATE
+    ${GST_CFLAGS_OTHER}
+)
