@@ -7,12 +7,9 @@ set(CMAKE_CUDA_FLAGS_INIT
 set(CMAKE_EXE_LINKER_FLAGS_INIT
     "--sysroot=$ENV{SDKTARGETSYSROOT}"
 )
-
-set(CMAKE_CUDA_HOST_COMPILER $ENV{CXX})
 set(CMAKE_CUDA_COMPILER "/usr/local/cuda-10.2/bin/nvcc")
 
-project(MRP LANGUAGES CXX CUDA)
-include(utilities/utilities.cmake)
+project(cudafunctions LANGUAGES CXX CUDA)
 
 # ------------------------------------------------------------------------------
 # Options
@@ -34,37 +31,24 @@ else()
     set(CMAKE_BUILD_TYPE Release)
 endif()
 
-# ------------------------------------------------------------------------------
-# Executable
-# ------------------------------------------------------------------------------
-add_executable(MRP
-    main.cpp
+add_library(cudafunctions STATIC
+    benchmark.cpp
+    kernels/benchmark.cu
 )
 
 # ------------------------------------------------------------------------------
 # CUDA architecture
 # ------------------------------------------------------------------------------
-set_target_properties(MRP PROPERTIES
+set_target_properties(cudafunctions PROPERTIES
     CUDA_ARCHITECTURES ${SM_ARCH}
 )
 
-# ------------------------------------------------------------------------------
-# Includes
-# ------------------------------------------------------------------------------
-target_include_directories(MRP PUBLIC
-    /usr/include
+target_include_directories(cudafunctions PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/kernels
 )
 
-# ------------------------------------------------------------------------------
-# Libraries
-# ------------------------------------------------------------------------------
-
-target_link_directories(MRP PRIVATE
-    $ENV{SDKTARGETSYSROOT}/usr/lib
+target_link_libraries(cudafunctions PUBLIC
+    cudart
 )
 
-target_link_libraries(MRP PRIVATE
-    utilities
-    nvbufsurface
-    nvbuf_utils
-)
