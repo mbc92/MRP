@@ -35,11 +35,13 @@
       "command": "scp",
       "args": [
         "build/MRP",
-        "root@192.168.178.66:/home/root/app"
+        "build/libutilities.so.1",
+        "build/libutilities.so.1.0",
+        "root@192.168.178.66:/home/root/"
       ],
       "dependsOn": "CMake: Compile",
       "problemMatcher": [],
-      "detail": "Copies compiled binary to Jetson Nano"
+      "detail": "Copies compiled binary and libraries to Jetson Nano"
     }
   ]
 }
